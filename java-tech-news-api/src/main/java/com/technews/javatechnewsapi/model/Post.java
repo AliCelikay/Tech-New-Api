@@ -28,9 +28,15 @@ public class Post implements Serializable {
 
     private Integer userId;
 
-    @NotNull
-    @Temporal(TemporalType.DATE)
-    @Column(name="posted_at")
+    @NotNull //signals to the Spring Data JPA that this variable is not to be
+    //allowed to be null in the database.
+
+    @Temporal(TemporalType.DATE) // allows us to use the type Date in the
+    // database and signals to the JPA that
+    //these fields will house data of that type
+
+    @Column(name="posted_at")// designates the name of the column for the database
+
     private Date postedAt = new Date();
 
     @NotNull
@@ -38,6 +44,7 @@ public class Post implements Serializable {
     @Column(name="updated_at")
     private Date updatedAt = new Date();
 
+    // Need to use FetchType.LAZY to resolve multiple bags exception
     @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments;
 

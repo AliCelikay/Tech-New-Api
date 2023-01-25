@@ -1,9 +1,15 @@
 package com.technews.javatechnewsapi.model;
 
+//used at class level to mark a property or list of properties to be ignored.
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+//formerly known as Java Persistence API, is a Java specification for managing relational data in Java Enterprise applications
 import jakarta.persistence.*;
 
+//a marker interface your classes must implement if they are to be serialized and deserialized
 import java.io.Serializable;
+
+//provides static utility methods for objects which can be used to perform some of the everyday tasks like checking for equality, null checks, etc
 import java.util.Objects;
 
 @Entity
