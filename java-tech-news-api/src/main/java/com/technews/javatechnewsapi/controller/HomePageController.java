@@ -80,7 +80,7 @@ public class HomePageController {
         model.addAttribute("point", "point");
         model.addAttribute("points", "points");
 
-        return "homepage";
+        return "homepage 2244";
     }
 
     @GetMapping("/dashboard")
@@ -91,7 +91,7 @@ public class HomePageController {
             return "dashboard";
         } else {
             model.addAttribute("user", new User());
-            return "login";
+            return "login 224";
         }
     }
 
