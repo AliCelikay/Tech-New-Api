@@ -13,22 +13,18 @@ import java.util.List;
 
 @RestController
 public class UserController {
-    @Autowired //annotation tells Spring to scan the project for objects that will need to be instantiated for a class or method to run. Unlike the new operator, which instantiates all objects before they're necessarily needed, @Autowired informs Spring to only instantiate each object as needed by the program. Then it can grab and inject the proper dependencies without having to manually wire anything in the XML. This form of dependency injection improves efficiency and keeps the program light.
+    @Autowired
     UserRepository repository;
 
     @Autowired
     VoteRepository voteRepository;
 
-    // The @GetMapping("/api/users") annotation on the getAllUsers() method combines the route ("/api/users") and the type of HTTP method used (GET), providing the method with a unique endpoint
+    //    GET Method that returns all users and adds up post count
     @GetMapping("/api/users")
-    // methods w/o void keyword must return something
     public List<User> getAllUsers() {
-        //we want getAllUsers method to return a list of users
-        List<User> userList = repository.findAll();//grabing a list of users and assigning it to the userList variable
+        List<User> userList = repository.findAll();
         for (User u : userList) {
-            // calling the getPost function for every User, assigned to variable u inside userList [Function needs PostController]
             List<Post> postList = u.getPosts();
-            //iterating over each post, invoking setVoteCount method, passing countVotesByPostId() method and finally using getId function to obtain id of posts
             for (Post p : postList) {
                 p.setVoteCount(voteRepository.countVotesByPostId(p.getId()));
             }
@@ -36,11 +32,10 @@ public class UserController {
         return userList;
     }
 
-    //instead of returning a list, getUserById function returns a single user
+    //    GET Method that returns single user and adds up post count
     @GetMapping("/api/user/{id}")
     public User getUserById(@PathVariable Integer id) {
         User returnUser = repository.getById(id);
-
         List<Post> postList = returnUser.getPosts();
         for (Post p : postList) {
             p.setVoteCount(voteRepository.countVotesByPostId(p.getId()));
@@ -48,19 +43,18 @@ public class UserController {
         return returnUser;
     }
 
-    // addUser method annotated with PostMapping function will allow us to add a user to the database.
+    //    POST Method that adds user and hashes password
     @PostMapping("/api/users")
-    //inside addUser method passes @RequestBody annotation which will map the body of this request to a transfer object, then deserialize the body onto a Java object for easier use
     public User addUser(@RequestBody User user) {
         // Encrypt password
-        // setPassword method offers protection, using BCrypt to encrypt the passwords for new users
         user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
-        // after encryption, we save new user and return new user
         repository.save(user);
         return user;
     }
 
-    //update user on id, @PathVariable allows us to ent the int id in the URL as a parameter
+    //    PUT Method to update user information; we find the user w/ param id and set it to a new temporary user variable;
+    // Then if it exists, we set the user id in the req body user to the queried user id and save the user
+    // I'm assuming since the id is the same, the other data is just overwritten in the db?
     @PutMapping("/api/users/{id}")
     public User updateUser(@PathVariable int id, @RequestBody User user) {
         User tempUser = repository.getById(id);
@@ -71,7 +65,7 @@ public class UserController {
         return user;
     }
 
-    //using @PathVariable to pass int to requested URL, and w/ the id we delete
+    //    DELETE Method that deletes user by ID
     @DeleteMapping("/api/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable int id) {

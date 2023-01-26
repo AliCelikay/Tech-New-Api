@@ -58,18 +58,13 @@ public class PostController {
     public String addVote(@RequestBody Vote vote, HttpServletRequest request) {
         String returnValue = "";
 
-//        if the user has session data (meaning if the user is logged in)...
         if (request.getSession(false) != null) {
             Post returnPost = null;
 
-//            ...then get session user data and set the userId of the vote param to the session id
             User sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
             vote.setUserId(sessionUser.getId());
             voteRepository.save(vote);
 
-//            I don't understand this fully
-//            Looks like we are finding the post id that correlates to the vote param post id
-//            Then we are setting the vote count for that post
             returnPost = repository.getById(vote.getPostId());
             returnPost.setVoteCount(voteRepository.countVotesByPostId(vote.getPostId()));
 

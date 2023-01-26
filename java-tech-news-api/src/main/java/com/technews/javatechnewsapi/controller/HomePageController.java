@@ -3,7 +3,6 @@ package com.technews.javatechnewsapi.controller;
 import com.technews.javatechnewsapi.model.Comment;
 import com.technews.javatechnewsapi.model.Post;
 import com.technews.javatechnewsapi.model.User;
-import com.technews.javatechnewsapi.model.User;
 import com.technews.javatechnewsapi.repository.CommentRepository;
 import com.technews.javatechnewsapi.repository.PostRepository;
 import com.technews.javatechnewsapi.repository.UserRepository;
