@@ -1,4 +1,4 @@
-# React Portfolio
+# Just Tech News
 
 ## Description
 Just Tech News application utilizes Java and Thymeleaf for the front end and template engine, Spring framework to build a web server and model and interact with a relational database. It is an application where anyone can share a post about any new tech savvy technologies and comment or upvote on other people's posts.
